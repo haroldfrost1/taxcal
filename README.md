@@ -18,6 +18,8 @@ A Tax Calculator on the commnad-line
   - For ease of implementation, I re-used the tax_rates.json as the test data, which I think is fine because real tax rates are not subject to change
 - Docker
   - Used golang:tip-alpine3.22 for 0 security vulns
+- Buildkite
+  - I took the liberty to add a CI/CD pipeline. Please see https://buildkite.com/harold-frost/taxcal-cicd
 
 # Development
 
