@@ -69,7 +69,7 @@ steps:
       queue: "docker"
     if: build.branch == "main" || build.tag != null
 
-  - label ":package: Package Info"
+  - label ":packagecloud: Package Info"
     key: "info"
     depends_on: "publish"
     command: |
