@@ -1,0 +1,31 @@
+# Binaries
+taxcal
+*.exe
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# IDE files
+.vscode
+.idea
+
+# Test files
+*_test.go
+
+# Build artifacts
+build/
+dist/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
