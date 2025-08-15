@@ -31,8 +31,6 @@ steps:
       docker run --rm taxcal:latest --help || echo "Image built successfully"
 
       echo "--- :white_check_mark: Build completed"
-    agents:
-      queue: "docker"
 
   - wait: ~
     continue_on_failure: false
@@ -65,8 +63,6 @@ steps:
       echo "Image available at: ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/taxcal:latest"
     env:
       DOCKER_REGISTRY: "docker.io"
-    agents:
-      queue: "docker"
     if: build.branch == "main" || build.tag != null
 
   - label: ":packagecloud: Package Info"
