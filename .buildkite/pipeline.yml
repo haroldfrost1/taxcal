@@ -1,0 +1,92 @@
+steps:
+  - label: ":golang: Unit Tests"
+    key: "test"
+    command: |
+      echo "--- :golang: Setting up Go environment"
+      go version
+      go mod download
+      
+      echo "--- :test_tube: Running unit tests"
+      go test -v ./... -cover
+      
+      echo "--- :white_check_mark: Tests completed"
+    plugins:
+      - docker#v5.8.0:
+          image: golang:tip-alpine3.22
+          workdir: /app
+          volumes:
+            - ".:/app"
+          environment:
+            - CGO_ENABLED=0
+
+  - label: ":docker: Build Docker Image"
+    key: "build"
+    depends_on: "test"
+    command: |
+      echo "--- :hammer_and_wrench: Building Docker image"
+      docker build -t taxcal:${BUILDKITE_COMMIT} .
+      docker build -t taxcal:latest .
+      
+      echo "--- :mag: Testing Docker image"
+      docker run --rm taxcal:latest --help || echo "Image built successfully"
+      
+      echo "--- :white_check_mark: Build completed"
+    agents:
+      queue: "docker"
+
+  - wait: ~
+    continue_on_failure: false
+
+  - label: ":arrow_up: Publish to Registry"
+    key: "publish"
+    depends_on: "build"
+    command: |
+      echo "--- :key: Logging into Docker registry"
+      echo "$$DOCKER_PASSWORD" | docker login -u "$$DOCKER_USERNAME" --password-stdin
+      
+      echo "--- :label: Tagging images"
+      docker tag taxcal:${BUILDKITE_COMMIT} ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/taxcal:${BUILDKITE_COMMIT}
+      docker tag taxcal:latest ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/taxcal:latest
+      
+      if [[ "${BUILDKITE_TAG}" ]]; then
+        echo "--- :bookmark: Tagging release version: ${BUILDKITE_TAG}"
+        docker tag taxcal:latest ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/taxcal:${BUILDKITE_TAG}
+      fi
+      
+      echo "--- :rocket: Pushing images to registry"
+      docker push ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/taxcal:${BUILDKITE_COMMIT}
+      docker push ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/taxcal:latest
+      
+      if [[ "${BUILDKITE_TAG}" ]]; then
+        docker push ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/taxcal:${BUILDKITE_TAG}
+      fi
+      
+      echo "--- :white_check_mark: Published successfully"
+      echo "Image available at: ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/taxcal:latest"
+    env:
+      DOCKER_REGISTRY: "docker.io"
+    agents:
+      queue: "docker"
+    if: build.branch == "main" || build.tag != null
+
+  - label ":package: Package Info"
+    key: "info"
+    depends_on: "publish"
+    command: |
+      echo "--- :information_source: Package Information"
+      echo "Docker Image: ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/taxcal:latest"
+      echo "Commit: ${BUILDKITE_COMMIT}"
+      echo "Branch: ${BUILDKITE_BRANCH}"
+      if [[ "${BUILDKITE_TAG}" ]]; then
+        echo "Tag: ${BUILDKITE_TAG}"
+      fi
+      
+      echo "--- :point_right: Usage Instructions"
+      echo "To run the tax calculator:"
+      echo "  docker run -it ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/taxcal:latest"
+      
+      echo "To pull the image:"
+      echo "  docker pull ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/taxcal:latest"
+    env:
+      DOCKER_REGISTRY: "docker.io"
+    if: build.branch == "main" || build.tag != null
