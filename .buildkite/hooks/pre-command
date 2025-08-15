@@ -8,6 +8,14 @@ echo "--- :gear: Pre-command hook"
 export DOCKER_REGISTRY="${DOCKER_REGISTRY:-docker.io}"
 export DOCKER_USERNAME="${DOCKER_USERNAME:-$(whoami)}"
 
+DOCKER_PASSWORD=$(buildkite-agent secret get docker_password)
+export DOCKER_PASSWORD
+
+if [[ -z "${DOCKER_PASSWORD:-}" ]]; then
+  echo "❌ DOCKER_PASSWORD environment variable is required for publishing"
+  exit 1
+fi
+
 # Validate required environment variables for publish steps
 if [[ "${BUILDKITE_STEP_KEY:-}" == "publish" ]]; then
   if [[ -z "${DOCKER_USERNAME:-}" ]]; then
