@@ -1,0 +1,120 @@
+{
+  "2023": {
+    "brackets": [
+      {
+        "min_income": 0,
+        "max_income": 18200,
+        "rate": 0
+      },
+      {
+        "min_income": 18200,
+        "max_income": 45000,
+        "rate": 0.19
+      },
+      {
+        "min_income": 45000,
+        "max_income": 120000,
+        "rate": 0.325
+      },
+      {
+        "min_income": 120000,
+        "max_income": 180000,
+        "rate": 0.37
+      },
+      {
+        "min_income": 180000,
+        "max_income": 0,
+        "rate": 0.45
+      }
+    ]
+  },
+  "2024": {
+    "brackets": [
+      {
+        "min_income": 0,
+        "max_income": 18200,
+        "rate": 0
+      },
+      {
+        "min_income": 18200,
+        "max_income": 45000,
+        "rate": 0.19
+      },
+      {
+        "min_income": 45000,
+        "max_income": 120000,
+        "rate": 0.325
+      },
+      {
+        "min_income": 120000,
+        "max_income": 180000,
+        "rate": 0.37
+      },
+      {
+        "min_income": 180000,
+        "max_income": 0,
+        "rate": 0.45
+      }
+    ]
+  },
+  "2025": {
+    "brackets": [
+      {
+        "min_income": 0,
+        "max_income": 18200,
+        "rate": 0
+      },
+      {
+        "min_income": 18200,
+        "max_income": 45000,
+        "rate": 0.16
+      },
+      {
+        "min_income": 45000,
+        "max_income": 135000,
+        "rate": 0.3
+      },
+
+      {
+        "min_income": 135000,
+        "max_income": 190000,
+        "rate": 0.37
+      },
+      {
+        "min_income": 190000,
+        "max_income": 0,
+        "rate": 0.45
+      }
+    ]
+  },
+  "2026": {
+    "brackets": [
+      {
+        "min_income": 0,
+        "max_income": 18200,
+        "rate": 0
+      },
+      {
+        "min_income": 18200,
+        "max_income": 45000,
+        "rate": 0.16
+      },
+      {
+        "min_income": 45000,
+        "max_income": 135000,
+        "rate": 0.3
+      },
+
+      {
+        "min_income": 135000,
+        "max_income": 190000,
+        "rate": 0.37
+      },
+      {
+        "min_income": 190000,
+        "max_income": 0,
+        "rate": 0.45
+      }
+    ]
+  }
+}
