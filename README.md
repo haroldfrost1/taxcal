@@ -2,6 +2,11 @@
 
 A Tax Calculator on the commnad-line
 
+# Try it!
+```
+docker run -it haroldfrost/taxcal:latest
+```
+ 
 # Assumptions & adjustment
 
 - Edge cases like int overflowing have not been considered / addressed
